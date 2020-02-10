@@ -1,0 +1,7 @@
+<view class="search_input">
+    <!-- 有文字水平和垂直对齐要求的使用 flex -->
+	<navigator url="/pages/search/index" open-type="navigate">
+		搜索
+	</navigator>
+</view>
+
