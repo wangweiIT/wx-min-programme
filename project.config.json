@@ -77,6 +77,13 @@
 					"pathName": "pages/index/index",
 					"query": "cat_id = 5",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品详情页面",
+					"pathName": "pages/goods_detail/index",
+					"query": "goods_id=43986",
+					"scene": null
 				}
 			]
 		}

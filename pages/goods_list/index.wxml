@@ -5,7 +5,7 @@
         <!-- 根据激活的item来显示 -->
         <block wx:if="{{tabs[0].isActive}}">
             <view class="first_tab" wx:for="{{goodsList}}" wx:key="goods_id">
-                <navigator class="goods_item" target="" url="" open-type="navigate">
+                <navigator class="goods_item" target="" url="/pages/goods_detail/index?goods_id={{item.goods_id}}" open-type="navigate">
                     <!-- 左侧 图片容器 -->
                     <view class="goods_img_wrap">
                         <image class="" src="{{item.goods_big_logo? item.goods_big_logo : 'https://ww1.sinaimg.cn/large/007rAy9hgy1g24by9t530j30i20i2glm.jpg'}}" mode="widthFix"></image>
