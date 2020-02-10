@@ -72,8 +72,8 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "pages/index/index",
+					"id": 2,
+					"name": "优购首页",
 					"pathName": "pages/index/index",
 					"query": "cat_id = 5",
 					"scene": null
@@ -83,6 +83,13 @@
 					"name": "商品详情页面",
 					"pathName": "pages/goods_detail/index",
 					"query": "goods_id=43986",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/index",
+					"query": "",
 					"scene": null
 				}
 			]

@@ -1,66 +1,53 @@
-// pages/cart/index.js
+/* 
+1 获取用户的收货地址
+  1.1 绑定点击事件
+  1.2 调用小程序内置的 api 获取用户的收货地址 wx.chooseAddress(走不通，在用户拒绝权限后，重新点击后就不会触发了)
+
+  1.2 获取 用户 对小程序 所授予 获取地址的 权限状态 scope (scope.address: true)
+     1.2.1 假如 用户 点击获取收货地址的提示框 确定 scope 值为 true，可以直接调用，获取收货地址
+     1.2.2 假设 用户 点击获取地址的提示框 取消 scope 值为 false （scope.address: false）
+           a 诱导用户自己打开 授权设置界面 当用户重新给与 获取地址权限的时候
+           b  获取收货地址
+     1.2.3 假如 用户 从来没有调用过获取地址的api 则scope 为 undefined，可以直接调用，获取收货地址
+  */
 Page({
-
-  /**
-   * 页面的初始数据
-   */
-  data: {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  data: {},
+  onLoad: function(options) {},
+  // 点击 收货地址
+  handleAddress() {
+    // console.log('购物车');
+    // 获取收货地址
+    // wx.chooseAddress({
+    //   success: result => {
+    //     console.log(result);
+    //   }
+    // });
+    //  1. 获取 权限状态
+    wx.getSetting({
+      success: result => {
+        // 2 获取权限状态
+        const scopeAddress = result.authSetting["scope.address"];
+        if (scopeAddress || scopeAddress === undefined) {
+          // 可以直接调用获取收货地址api
+          wx.chooseAddress({
+            success: result1 => {
+              console.log(result1);
+            }
+          });
+        } else {
+          // 用户 以前拒绝过授予权限 先诱导用户打开 授权页面
+          wx.openSetting({
+            success: result => {
+              // 4 可以调用 收货地址代码
+              wx.chooseAddress({
+                success: result3 => {
+                  console.log(result3);
+                }
+              });
+            }
+          });
+        }
+      }
+    });
   }
-})
+});

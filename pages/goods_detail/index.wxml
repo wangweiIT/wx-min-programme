@@ -30,10 +30,13 @@
             <button open-type="share"></button>
         </view>
         <view class="tool_item">
-            <view class="iconfont icon-gouwuche1"></view>
-            <view>购物车</view>
+            <!-- 购物车页面是在tabbar中设置过了，所以需要使用switchTab来进行跳转 -->
+            <navigator url="/pages/cart/index" open-type="switchTab">
+                <view class="iconfont icon-gouwuche1"></view>
+                <view>购物车</view>
+            </navigator>
         </view>
-        <view class="tool_item btn_cart">
+        <view class="tool_item btn_cart" bindtap="handleCartAdd">
             <view>加入购物车</view>
         </view>
         <view class="tool_item btn_buy">

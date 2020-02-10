@@ -55,13 +55,11 @@ Page({
    */
   onLoad: function(options) {
     // 注意这里是this.data下面的数据，不是this下的和vue有区别
-    debugger;
     this.data.queryParms.cid = options.cat_id;
     this.getGoodsList();
   },
   // 下拉触底触发事件
   onReachBottom() {
-    debugger;
     if (
       this.data.queryParms.pagenum * this.data.queryParms.pagesize >=
       this.data.total

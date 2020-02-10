@@ -64,6 +64,9 @@ page {
   position: relative;
   /* 将按钮定位到其上面 */
 }
+.btm_tool .tool_item navigator {
+  text-align: center;
+}
 .btm_tool .tool_item button {
   position: absolute;
   top: 0;
