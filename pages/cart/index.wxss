@@ -4,3 +4,14 @@
 .revice_address_row .address_btn button {
   width: 60%;
 }
+.user_info_row {
+  display: flex;
+  padding: 20rpx;
+}
+.user_info_row .user_info {
+  flex: 5;
+}
+.user_info_row .phone {
+  flex: 3;
+  text-align: right;
+}

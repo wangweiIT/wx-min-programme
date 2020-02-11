@@ -9,21 +9,32 @@
            a 诱导用户自己打开 授权设置界面 当用户重新给与 获取地址权限的时候
            b  获取收货地址
      1.2.3 假如 用户 从来没有调用过获取地址的api 则scope 为 undefined，可以直接调用，获取收货地址
-  */
+  
+2 页面加载完毕
+  0 onLoad onShow(使用该事件，在页面显示时候触发)
+  2.1 获取本地存储的地址数据 
+  2.2 把数据 设置给 data 中一个变量 
+     */
+
+import { getSetting, chooseAddress, openSetting } from "../../utils/asyncWx";
+const regeneratorRuntime = require("../../lib/runtime/runtime.js");
 Page({
-  data: {},
+  data: {
+    address: {}
+  },
+  onShow() {
+    console.log(2);
+    let address = wx.getStorageSync('address');
+    this.setData({
+      address
+    })
+
+  },
   onLoad: function(options) {},
   // 点击 收货地址
-  handleAddress() {
-    // console.log('购物车');
-    // 获取收货地址
-    // wx.chooseAddress({
-    //   success: result => {
-    //     console.log(result);
-    //   }
-    // });
+  async handleAddress() {
     //  1. 获取 权限状态
-    wx.getSetting({
+    /* wx.getSetting({
       success: result => {
         // 2 获取权限状态
         const scopeAddress = result.authSetting["scope.address"];
@@ -49,5 +60,25 @@ Page({
         }
       }
     });
+    */
+    try {
+      //  1 获取权限状态
+      const result = await getSetting();
+      const scopeAddress = result.authSetting["scope.address"];
+      //  2 判断权限状态
+      if (scopeAddress === false) {
+        // 4 诱导用户打开授权api
+        await openSetting();
+      }
+      //  3 调用获取收货地址的api
+      const result1 = await chooseAddress();
+      // console.log(result1);
+      // 放入到地址缓存中去
+      wx.setStorageSync('address', result1);
+      console.log(1);
+      
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
