@@ -25,6 +25,15 @@ page {
   border-top: 1rpx solid currentColor;
   border-bottom: 1rpx solid currentColor;
 }
+.cart_content .cart_main .img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cart_content .cart_main .img .no_data {
+  width: 80%;
+  height: 80%;
+}
 .cart_content .cart_main .cart_item {
   display: flex;
   padding: 10rpx;

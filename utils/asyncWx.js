@@ -46,3 +46,20 @@ export const openSetting = () => {
     });
   });
 };
+
+/* 
+ promise 形式的showModal 只要是回调的，都可以进行封装
+*/
+export const showModal = parmas => {
+  return new Promise((resolve, reject) => {
+    wx.showModal({
+      ...parmas,
+      success: res => {
+        resolve(res);
+      },
+      fail: err => {
+        reject(err);
+      }
+    });
+  });
+};

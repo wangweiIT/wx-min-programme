@@ -38,9 +38,21 @@
   3 商品对象的选中状态 取反
   4 重新填充到 data中和缓存中
   5 重新计算全选，总几个和总数量
+
+7 底部的全选和反选
+  1 全选复选框的 change
+  2 获取 data 中的全选变量 allChecked
+  3 直接取反allChecked = !allChecked
+  4 遍历购物车数组  让里面的 商品 选中状态随着 allChecked 改变而改变
+  5 把购物车数组 和 选中状态 都重新设置会data 和缓存中
   */
 
-import { getSetting, chooseAddress, openSetting } from "../../utils/asyncWx";
+import {
+  getSetting,
+  chooseAddress,
+  openSetting,
+  showModal
+} from "../../utils/asyncWx";
 const regeneratorRuntime = require("../../lib/runtime/runtime.js");
 Page({
   data: {
@@ -56,24 +68,10 @@ Page({
     let address = wx.getStorageSync("address");
     // 获取缓存中的购物车数据
     const cart = wx.getStorageSync("cart") || [];
-    let totalPrice = 0;
-    let totalNum = 0;
-    // 计算全选
-    const allChecked = cart.length
-      ? cart.every(v => {
-          if (v.checked) {
-            totalNum += v.num;
-            totalPrice += v.goods_price * v.num;
-          }
-          return v.checked;
-        })
-      : false;
+    // 设置购物车状态
+    this.setCart(cart);
     this.setData({
-      address,
-      cart,
-      allChecked,
-      totalNum,
-      totalPrice
+      address
     });
   },
   onLoad: function(options) {},
@@ -128,8 +126,9 @@ Page({
       console.log(error);
     }
   },
-
+  // 商品选中
   handleItemChange(e) {
+    debugger;
     // 1 获取被修改的商品的ID
     const { id } = e.currentTarget.dataset;
     console.log(id);
@@ -139,19 +138,30 @@ Page({
     let index = cart.findIndex(v => v.goods_id === id);
     // 4 选中状态取反
     cart[index].checked = !cart[index].checked;
+    // 设置购物车状态
+    this.setCart(cart);
+  },
+  // 设置购物车的状态  重新计算底部的 全选 总价格 购买数量
+  setCart(cart) {
     // 重新计算
     let totalPrice = 0;
     let totalNum = 0;
+    // 初始默认是全选
+    let allCheckedFlag = true;
     // 计算全选
-    const allChecked = cart.length
-      ? cart.every(v => {
-          if (v.checked) {
-            totalNum += v.num;
-            totalPrice += v.goods_price * v.num;
-          }
-          return v.checked;
-        })
-      : false;
+    if (cart.length !== 0) {
+      cart.forEach(v => {
+        if (v.checked) {
+          totalNum += v.num;
+          totalPrice += v.goods_price * v.num;
+        } else {
+          allCheckedFlag = false;
+        }
+      });
+    } else {
+      allCheckedFlag = false;
+    }
+    const allChecked = allCheckedFlag;
     this.setData({
       cart,
       allChecked,
@@ -161,5 +171,63 @@ Page({
 
     // 5 6 把购物车数据重新写入data和缓存中
     wx.setStorageSync("cart", cart);
+  },
+  // 商品的全选功能
+  handleItemAllChecked() {
+    // 获取 data 中购物车数据
+    let { cart, allChecked } = this.data;
+    allChecked = !allChecked;
+    cart.forEach(v => {
+      v.checked = allChecked;
+    });
+    // 更新 data 和 底部购物车数据
+    this.setCart(cart);
+  },
+  // 商品的 +1 和-1
+  async handleItemEdit(e) {
+    // 获取到商品的goods_id 和 opertion
+    const { id, opeartion } = e.currentTarget.dataset;
+    // console.log(id, opeartion);
+    // 找到 cart 中对应的 item 然后修改它们的num
+    const { cart } = this.data;
+    const index = cart.findIndex(v => v.goods_id === id);
+    const cartItem = cart[index];
+    //  判断如果当前的选择的商品的数量是 1 并且 operation 为-1 则 删除该商品
+    if (opeartion === -1 && cartItem.num === 1) {
+      const res = await showModal({
+        title: "提示",
+        content: "确定从购物车移除该商品？"
+      });
+      if (res.confirm) {
+        // 将 cart 中的该商品项目删除
+        cart.splice(index, 1);
+      }
+    } else {
+      cartItem.num += opeartion;
+    }
+    // 更新 data 和 底部购物车数据
+    this.setCart(cart);
+  },
+  // 商品的结算
+  handleOrder() {
+    // 判断是否有收获地址 和商品信息
+    const { address, cart } = this.data;
+    if (!address.userName) {
+      wx.showToast({
+        title: "没有填写地址",
+        icon: 'none',
+        mask: true
+      });
+      return
+    }
+    if (cart.length === 0) {
+      wx.showToast({
+        title: "没有商品",
+        icon: 'none',
+        mask: true
+      });
+      return
+    }
+    console.log("可以支付提交");
   }
 });
