@@ -14,21 +14,67 @@
   0 onLoad onShow(使用该事件，在页面显示时候触发)
   2.1 获取本地存储的地址数据 
   2.2 把数据 设置给 data 中一个变量 
-     */
+     
+3 onShow
+  0 回到商品详情页 第一次添加商品的时候 手动添加了属性
+    1 num = 1
+    2 checked = true
+  1 获取缓存中的购物车数组
+  2  把购物车数据填充到data中
+
+4 全选的实现 数据的展示
+  1 在onshow 获取到缓存中的数组
+  2 根据购物车中的商品数据进行计算 所有的商品都被选中了 checked 则全选就被选中
+  3 空数组 调用 every 返回就是true
+  
+5 总价格和总数量
+  1 都需要商品被选中 我们才拿来计算
+  2 获取到购物车的数组，变量判断商品是否被选中
+  3 若被选中了，则计算它们的数量和总价  
+
+6 商品的选中
+  1 绑定change 事件
+  2 获取被修改的商品的对象
+  3 商品对象的选中状态 取反
+  4 重新填充到 data中和缓存中
+  5 重新计算全选，总几个和总数量
+  */
 
 import { getSetting, chooseAddress, openSetting } from "../../utils/asyncWx";
 const regeneratorRuntime = require("../../lib/runtime/runtime.js");
 Page({
   data: {
-    address: {}
+    address: {},
+    cart: [],
+    allChecked: false,
+    totalPrice: 0,
+    totalNum: 0
   },
   onShow() {
     console.log(2);
-    let address = wx.getStorageSync('address');
+    debugger;
+    let address = wx.getStorageSync("address");
+    // 获取缓存中的购物车数据
+    const cart = wx.getStorageSync("cart") || [];
+    let totalPrice = 0;
+    let totalNum = 0;
+    // 计算全选
+    const allChecked = cart.length
+      ? cart.every(v => {
+          if (v.checked) {
+            totalNum += v.num;
+            totalPrice += v.goods_price * v.num;
+          }
+          return v.checked;
+        })
+      : false;
     this.setData({
-      address
-    })
-
+      address,
+      cart,
+      allChecked,
+      totalNum,
+      totalPrice
+    });
   },
   onLoad: function(options) {},
   // 点击 收货地址
@@ -61,6 +107,8 @@ Page({
       }
     });
     */
+
+    // 页面是先触发获取地址的成功回调后 才会触发页面的 onShow
     try {
       //  1 获取权限状态
       const result = await getSetting();
@@ -74,11 +122,44 @@ Page({
       const result1 = await chooseAddress();
       // console.log(result1);
       // 放入到地址缓存中去
-      wx.setStorageSync('address', result1);
+      wx.setStorageSync("address", result1);
       console.log(1);
-      
     } catch (error) {
       console.log(error);
     }
+  },
+
+  handleItemChange(e) {
+    // 1 获取被修改的商品的ID
+    const { id } = e.currentTarget.dataset;
+    console.log(id);
+    // 2 获取购物车数组
+    let { cart } = this.data;
+    // 3 找到被修改的商品对象
+    let index = cart.findIndex(v => v.goods_id === id);
+    // 4 选中状态取反
+    cart[index].checked = !cart[index].checked;
+    // 重新计算
+    let totalPrice = 0;
+    let totalNum = 0;
+    // 计算全选
+    const allChecked = cart.length
+      ? cart.every(v => {
+          if (v.checked) {
+            totalNum += v.num;
+            totalPrice += v.goods_price * v.num;
+          }
+          return v.checked;
+        })
+      : false;
+    this.setData({
+      cart,
+      allChecked,
+      totalNum,
+      totalPrice
+    });
+
+    // 5 6 把购物车数据重新写入data和缓存中
+    wx.setStorageSync("cart", cart);
   }
 });

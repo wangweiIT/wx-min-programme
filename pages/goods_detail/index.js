@@ -70,6 +70,8 @@ Page({
     if (index === -1) {
       // 3 不存在，则是第一次添加
       this.data.goodsObj.num = 1;
+      // 处于选中状态
+      this.data.goodsObj.checked = true;
       cart.push(this.data.goodsObj);
     } else {
       // 4 已经存在 则num++
