@@ -51,7 +51,8 @@ import {
   getSetting,
   chooseAddress,
   openSetting,
-  showModal
+  showModal,
+  showToast
 } from "../../utils/asyncWx";
 const regeneratorRuntime = require("../../lib/runtime/runtime.js");
 Page({
@@ -63,8 +64,6 @@ Page({
     totalNum: 0
   },
   onShow() {
-    console.log(2);
-    debugger;
     let address = wx.getStorageSync("address");
     // 获取缓存中的购物车数据
     const cart = wx.getStorageSync("cart") || [];
@@ -128,7 +127,6 @@ Page({
   },
   // 商品选中
   handleItemChange(e) {
-    debugger;
     // 1 获取被修改的商品的ID
     const { id } = e.currentTarget.dataset;
     console.log(id);
@@ -209,25 +207,27 @@ Page({
     this.setCart(cart);
   },
   // 商品的结算
-  handleOrder() {
+  async handleOrder() {
     // 判断是否有收获地址 和商品信息
     const { address, cart } = this.data;
     if (!address.userName) {
-      wx.showToast({
+      await showToast({
         title: "没有填写地址",
-        icon: 'none',
+        icon: "none",
         mask: true
       });
-      return
+      return;
     }
     if (cart.length === 0) {
-      wx.showToast({
+      await showToast({
         title: "没有商品",
-        icon: 'none',
+        icon: "none",
         mask: true
       });
-      return
+      return;
     }
-    console.log("可以支付提交");
+    wx.navigateTo({
+      url: '/pages/pay/index'
+    });
   }
 });

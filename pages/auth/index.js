@@ -1,66 +1,34 @@
-// pages/auth/index.js
+const regeneratorRuntime = require("../../lib/runtime/runtime.js");
+// 引入全局变量
+const app = getApp();
+const { login, request } = app.globalData;
+
 Page({
+  data: {},
+  onLoad: function(options) {},
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  async bindgetuserinfo(e) {
+    try {
+      // 1 获取用户信息
+      const { encryptedData, rawData, iv, signature } = e.detail;
+      // 2 获取小程序登录后的 code
+      const { code } = await login();
+      console.log(code);
+      // 组装请求wxlogin的参数
+      const parmas = { encryptedData, rawData, iv, signature, code };
+      // 3 发送请求，获取用户的 token 值
+      const { token } = await request({
+        url: "/users/wxlogin",
+        method: "POST",
+        data: parmas
+      });
+      // 4 把 token 保存到缓存中去
+      wx.setStorageSync("token", token);
+      wx.navigateBack({
+        delta: 1
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-})
+});
