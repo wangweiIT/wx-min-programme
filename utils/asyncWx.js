@@ -63,3 +63,52 @@ export const showModal = parmas => {
     });
   });
 };
+/* 
+ promise 形式的showToast 只要是回调的，都可以进行封装
+*/
+export const showToast = parmas => {
+  return new Promise((resolve, reject) => {
+    wx.showToast({
+      ...parmas,
+      success: res => {
+        resolve(res);
+      },
+      fail: err => {
+        reject(err);
+      }
+    });
+  });
+};
+/* 
+ promise 形式的 login 只要是回调的，都可以进行封装
+*/
+export const  login = parmas => {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      ...parmas,
+      success: (result)=>{
+        resolve(result)
+      },
+      fail: (err)=>{
+        reject(err)
+      }
+    });
+  });
+};
+
+/* 
+ promise 形式的 requestPayment 只要是回调的，都可以进行封装
+*/
+export const  requestPayment = parmas => {
+  return new Promise((resolve, reject) => {
+    wx.requestPayment({
+      ...parmas,
+      success: (result)=>{
+        resolve(result)
+      },
+      fail: (err)=>{
+        reject(err)
+      }
+    });
+  });
+};
