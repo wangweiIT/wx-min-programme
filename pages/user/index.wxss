@@ -1,1 +1,113 @@
-/* pages/user/index.wxss */
+page {
+  background: rgba(232, 232, 227);
+  color: #666;
+}
+.user_info_wrap {
+  /* 视口高度的45% */
+  height: 40vh;
+  background-color: var(--themeColor);
+  overflow: hidden;
+  position: relative;
+}
+.user_info_wrap .user_img_wrap {
+  /* 将图片撑开和外部一样 */
+  position: relative;
+}
+.user_info_wrap .user_img_wrap .usr_bg {
+  height: 45vh;
+  -webkit-filter: blur(10px);
+  /* Chrome, Safari, Opera */
+  filter: blur(10px);
+}
+.user_info_wrap .user_img_wrap .user_info {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 20%;
+  text-align: center;
+}
+.user_info_wrap .user_img_wrap .user_info .user_icon {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+}
+.user_info_wrap .user_img_wrap .user_info .user_name {
+  color: #fff;
+  margin-top: 40rpx;
+  font-size: 40rpx;
+}
+.user_info_wrap .usr_btn {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 40%;
+  border: 1rpx solid greenyellow;
+  color: greenyellow;
+  padding: 30rpx;
+  border-radius: 10rpx;
+}
+.user_content {
+  position: relative;
+}
+.user_content .user_main {
+  position: absolute;
+  width: 90%;
+  left: 50%;
+  transform: translate(-50%);
+  top: -40rpx;
+  padding-bottom: 100rpx;
+}
+.user_content .user_main .history_wrap {
+  display: flex;
+  background-color: #fff;
+  padding-top: 10rpx;
+  padding-bottom: 5rpx;
+}
+.user_content .user_main .history_wrap navigator {
+  flex: 1;
+  text-align: center;
+}
+.user_content .user_main .history_wrap navigator .his_num {
+  color: var(--themeColor);
+}
+.orders_wrap {
+  background-color: #fff;
+  margin-top: 16rpx;
+}
+.orders_wrap .orders_title {
+  padding: 15rpx;
+  border-bottom: 1rpx solid #ccc;
+}
+.orders_wrap .orders_content {
+  display: flex;
+  text-align: center;
+  padding: 20rpx;
+}
+.orders_wrap .orders_content navigator {
+  flex: 1;
+}
+.orders_wrap .orders_content navigator .iconfont {
+  color: var(--themeColor);
+}
+.address_wrap {
+  margin-top: 16rpx;
+  background-color: #fff;
+  padding: 16rpx;
+  text-align: left;
+}
+.app_info_wrap {
+  margin-top: 16rpx;
+  background-color: #fff;
+}
+.app_info_wrap .app_info_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx solid #ccc;
+  padding: 16rpx;
+}
+.recommand_wrap {
+  margin-top: 16rpx;
+  background-color: #fff;
+  padding: 16rpx;
+}

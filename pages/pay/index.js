@@ -75,7 +75,7 @@ Page({
       console.log("已经存在token");
       // 3 创建订单
       //  3.1 请求头 参数
-      const header = { Authorization: token };
+      // const header = { Authorization: token };
       //  3.2 请求体
       const order_price = this.data.totalPrice;
       const consignee_addr = this.data.address;
@@ -94,14 +94,14 @@ Page({
         url: "/my/orders/create",
         method: "POST",
         data: { order_price, consignee_addr, goods },
-        header
+        // header
       });
       // 5 发起预支付
       const { pay } = await request({
         url: "/my/orders/req_unifiedorder",
         method: "POST",
         data: { order_number },
-        header
+        // header
       });
       // 6 调用微信支付接口
       await requestPayment(pay);
@@ -110,7 +110,7 @@ Page({
         url: "/my/orders/chkOrder",
         method: "POST",
         data: { order_number },
-        header
+        // header
       });
       showToast({ title: "支付成功" });
       // 8 更新缓存中个的购车页面

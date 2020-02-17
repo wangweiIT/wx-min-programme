@@ -1,1 +1,16 @@
-/* pages/order/index.wxss */
+.order_main .order_item {
+  border-bottom: 1rpx solid #ccc;
+  border-top: 1rpx solid #ccc;
+  padding: 20rpx;
+  color: #666;
+}
+.order_main .order_item .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx;
+  align-items: center;
+}
+.order_main .order_item .row .order_price_value {
+  color: var(--themeColor);
+  font-size: 32rpx;
+}
