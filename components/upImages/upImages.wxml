@@ -1,0 +1,4 @@
+<view class="up_img_wrap">
+    <image src="{{img}}"></image>
+    <icon type="clear" size="23" color="red" bindtap="handleRemoveImg" data-removeImg="{{img}}"></icon>
+</view>
