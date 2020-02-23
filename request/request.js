@@ -14,13 +14,11 @@ export const request = parmas => {
   });
   ajaxNum++;
   return new Promise((resolve, reject) => {
-    debugger
     wx.request({
       ...parmas,
       header,
       url: baseURL + parmas.url,
       success: result => {
-        debugger
         resolve(result.data.message || {});
       },
       fail: err => {
@@ -28,7 +26,6 @@ export const request = parmas => {
       },
       // 无论成功或者失败都会触发
       complete: () => {
-        debugger
         ajaxNum--;
         if (ajaxNum === 0) {
           // 关闭正在加载中的loading

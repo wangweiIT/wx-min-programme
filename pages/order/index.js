@@ -1,6 +1,6 @@
 /* 
  1 页面可能会频繁的打开，使用onShow
-  1.0 onShow 不同于onLoad无法咋形参上获取url传值
+  1.0 onShow 不同于onLoad无法拿形参上获取url传值
   1.0.5 判断缓存中有没有token 如果没有就跳转到授权页面
   1.1 获取url上的参数 type 根据type tab 那个被激活选中
   1.2 根据type 去发送请求 获取订单数据
@@ -78,14 +78,14 @@ Page({
   onShow(options) {
     // 1 获取小程序的页面栈-内存数组 长度最大是10页面
     // 2 数组中 索引最大的页面就是当前页面
+    // 如果token 不存在 则跳转到授权页面
     const token = wx.getStorageSync("token");
-    /* if (!token) {
+    if (!token) {
       wx.navigateTo({
         url: "/pages/auth/index"
       });
       return;
-    } */
-    debugger;
+    }
     let pages = getCurrentPages();
     let { type } = pages[pages.length - 1].options;
     this.changeTitleItemChange(type - 1);
@@ -93,10 +93,16 @@ Page({
   },
   // 获取订单列表方法
   async getOrders(type) {
-    // const res = await request({ url: "/my/orders/all", data: { type } });
-    // console.log(res);
-    this.setData({
+    const res = await request({ url: "/my/orders/all", data: { type } });
+    console.log(res);
+    /* this.setData({
       orders: this.data.orders.map(v=>({...v,create_time_cn:new Date(v.create_time * 1000).toLocaleTimeString()}))
+    }); */
+    this.setData({
+      orders: res.orders.map(v => ({
+        ...v,
+        create_time_cn: new Date(v.create_time * 1000).toLocaleTimeString()
+      }))
     });
   },
   // 根据标题的索引，激活 选中的标题数组

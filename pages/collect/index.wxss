@@ -1,1 +1,48 @@
-/* pages/collect/index.wxss */
+.collect_main {
+  background-color: #eef0f1;
+}
+.collect_main .collect_title {
+  padding: 15rpx;
+  display: flex;
+}
+.collect_main .collect_title .collect_tips {
+  padding: 10rpx;
+  border: 1rpx solid #ccc;
+  background-color: #fff;
+  margin-left: 25rpx;
+}
+.collect_main .collect_title .collect_tips.active {
+  color: var(--themeColor);
+  border-color: currentColor;
+}
+.collect_main .collect_content .goods_item {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 3rpx solid #ccc;
+}
+.collect_main .collect_content .goods_item .goods_img_wrap {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.collect_main .collect_content .goods_item .goods_img_wrap image {
+  width: 70%;
+}
+.collect_main .collect_content .goods_item .goods_info_wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex: 3;
+}
+.collect_main .collect_content .goods_item .goods_info_wrap .goods_name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.collect_main .collect_content .goods_item .goods_info_wrap .goods_price {
+  color: var(--themeColor);
+  font-size: 32rpx;
+}

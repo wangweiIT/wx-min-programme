@@ -32,21 +32,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-    goodsObj: {}
+    goodsObj: {},
+    // 商品是否被收藏过
+    isCollect: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onShow: function() {
+    var curPages = getCurrentPages();
+    const options = curPages[curPages.length - 1].options;
     const { goods_id } = options;
-    // console.log(goods_id);
+    console.log(goods_id);
     this.getGoodsDetail(goods_id);
   },
   // 获取商品的详情数据
   async getGoodsDetail(goods_id) {
     const res = await request({ url: "/goods/detail", data: { goods_id } });
-    // console.log(res);
+    // 1 获取缓存中收藏数组
+    let collet = wx.getStorageSync("collect") || [];
+    // 2 判断商品是否被收藏了
+    let isCollect = collet.some(
+      v => v.goods_id === res.goods_id
+    );
     // 避免保存过多无用的属性
     this.setData({
       goodsObj: {
@@ -54,8 +63,10 @@ Page({
         goods_price: res.goods_price,
         goods_name: res.goods_name,
         goods_id: res.goods_id,
+        goods_big_logo: res.goods_big_logo,
         goods_introduce: res.goods_introduce.replace(/\.webp/g, ".jpg")
-      }
+      },
+      isCollect
     });
   },
   // 点击轮播图 发达预览
@@ -95,5 +106,39 @@ Page({
       icon: "success",
       mask: true
     });
+  },
+  // 点击商品中的收藏
+  handleCollect() {
+    let isCollect = false
+    // 1 获取缓存中的商品收藏数组
+    let collect = wx.getStorageSync('collect') || []
+    // 2 判断该商品是否被收藏过
+    let index =collect.findIndex(v=>v.goods_id === this.data.goodsObj.goods_id)
+    // 3 当 index !== -1 就表示已经收藏过
+    if (index !== -1) {
+      // 收藏过 在数组中删除
+      collect.splice(index,1)
+      isCollect = false
+      wx.showToast({
+        title: '取消收藏',
+        icon: 'success',
+        mask: true
+      });
+    } else {
+      // 没收藏过
+      collect.push(this.data.goodsObj)
+      isCollect = true
+      wx.showToast({
+        title: '收藏收藏',
+        icon: 'success',
+        mask: true
+      });
+    }
+    // 4 把数组存储到缓存中
+    wx.setStorageSync('collect',collect)
+    // 5 需改data中的属性 isCollect
+    this.setData({
+      isCollect
+    })
   }
 });
