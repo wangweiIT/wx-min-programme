@@ -55,7 +55,8 @@ Page({
    */
   onLoad: function(options) {
     // 注意这里是this.data下面的数据，不是this下的和vue有区别
-    this.data.queryParms.cid = options.cat_id;
+    this.data.queryParms.cid = options.cat_id || '';
+    this.data.queryParms.query = options.query || '';
     this.getGoodsList();
   },
   // 下拉触底触发事件

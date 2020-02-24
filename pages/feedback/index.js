@@ -97,8 +97,7 @@ Page({
   // 提交按钮点击事件
   handleFormSubmit(e) {
     // 1 获取文本域内容
-    debugger
-    const {textVal} = this.data
+    const {textVal, chooseImages} = this.data
     // 2 合法性校验
     if (!textVal.trim()) {
       // 不合法
@@ -109,5 +108,24 @@ Page({
       });
       return
     }
+    // 3 上传文件到专门的服务器
+    // 上传文件不支持多个文件同时上传 遍历数组  挨个上传
+    debugger
+    chooseImages.forEach((v, i)=>{
+      wx.uploadFile({
+        // 图片上传到哪里
+        url: 'https://ae01.alicdn.com/kf/',
+        // 被上传的文件的路径
+        filePath: v,
+        // 上传的文件的名称 后台来获取文件 file
+        name: 'file',
+        // 顺带的文本信息
+        formData: {},
+        success: (result)=>{
+          console.log(result);
+          
+        }
+      });
+    })
   }
 });

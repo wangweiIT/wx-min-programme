@@ -19,7 +19,7 @@
   <view class="index_swiper">
     <swiper indicator-dots autoplay circular>
       <swiper-item wx:for="{{swiperList}}" wx:key="goods_id">
-        <navigator open-type="navigate">
+        <navigator open-type="navigate" url="{{item.navigator_url}}">
           <image src="{{item.image_src}}" mode="widthFix" lazy-load="false" />
         </navigator>
       </swiper-item>
@@ -28,7 +28,7 @@
   <!-- 轮播图 结束 -->
   <!-- 导航 分类开始 -->
   <view class="index_cate">
-    <navigator open-type="navigate" wx:for="{{cateList}}" wx:key="name">
+    <navigator open-type="switchTab" wx:for="{{cateList}}" wx:key="name" url="{{item.navigator_url}}">
       <image src="{{item.image_src}}" mode="widthFix"></image>
     </navigator>
   </view>
@@ -42,7 +42,7 @@
       </view>
       <!-- 内容 -->
       <view class="floor_list">
-        <navigator url="" open-type="navigate" wx:for="{{item1.product_list}}" wx:key="name">
+        <navigator url="{{item.navigator_url}}" open-type="navigate" wx:for="{{item1.product_list}}" wx:key="name">
           <image mode="{{index === 0? 'widthFix': 'scaleToFill'}}" src="{{item.image_src}}"></image>
         </navigator>
       </view>
